@@ -16,20 +16,23 @@ const TaskSchema = new mongoose.Schema({
     },
     Speed: {
         type: Number,
+        default: 0,
         required: true,
     },
     Quality: {
         type: Number,
+        default: 0,
         required: true,
     },
     Communication: {
         type: Number,
+        default: 0,
         required: true,
     },
     Developer: {
         type: mongoose.Types.ObjectId,
         ref: "User",
-        required: true,
+        required: false,
     },
     Customer: {
         type: mongoose.Types.ObjectId,
@@ -39,6 +42,11 @@ const TaskSchema = new mongoose.Schema({
     Status: {
         type: mongoose.Types.ObjectId,
         ref: "taskStatus",
+        required: true,
+    },
+    Category: {
+        type: mongoose.Types.ObjectId,
+        ref: "Category",
         required: true,
     },
 },

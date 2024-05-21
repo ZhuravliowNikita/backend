@@ -7,7 +7,13 @@ const SkillSchema = new mongoose.Schema({
         required: true,
         unique: true,
     },
+    Category: {
+        type: mongoose.Types.ObjectId,
+        ref: "Category",
+        required: true,
+    },
 },
+
     {
         timestamps: true,
     },

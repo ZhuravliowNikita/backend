@@ -2,7 +2,7 @@ import jwt from 'jsonwebtoken'
 import bcrypt from 'bcrypt'
 import { validationResult } from 'express-validator'
 import UserModel from '../models/User.js'
-import ProfileModel from '../models/Profile.js'
+
 
 
 export const register = async (req, res) => {
@@ -16,9 +16,7 @@ export const register = async (req, res) => {
         const salt = await bcrypt.genSalt(10);
         const hash = await bcrypt.hash(password, salt);
 
-        // const docProfile = new ProfileModel({
-        // });
-        // const profile = await docProfile.save();
+        
 
         const doc = new UserModel({
             Email: req.body.email,
@@ -26,7 +24,7 @@ export const register = async (req, res) => {
             avatarUrl: req.body.avatarUrl,
             passwordHash: hash,
             isDeveloper: req.body.isDeveloper,
-            Profile: profile,
+            
         });
 
 
@@ -56,7 +54,7 @@ export const register = async (req, res) => {
 
 export const login = async (req, res) => {
     try {
-        const user = await UserModel.findOne({ email: req.body.email });
+        const user = await UserModel.findOne({ Email: req.body.email });
 
         if (!user) {
             return res.status(404).json({

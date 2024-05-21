@@ -23,7 +23,7 @@ const UserSchema = new mongoose.Schema({
     },
     isDeveloper: {
         type: Boolean,
-        required: true,
+        default: false,
     },
     Profile: {
         type: ProfileSchema,
