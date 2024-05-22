@@ -2,6 +2,7 @@ import jwt from 'jsonwebtoken'
 import bcrypt from 'bcrypt'
 import { validationResult } from 'express-validator'
 import UserModel from '../models/User.js'
+import ProfileModel from "../models/Profile.js"
 
 
 
@@ -18,13 +19,18 @@ export const register = async (req, res) => {
 
         
 
+        const profileDoc = new ProfileModel({
+            Birthday: Date(req.body.Birthday),
+            pricePerHour: req.body.pricePerHour
+        })
+
         const doc = new UserModel({
             Email: req.body.email,
             fullName: req.body.fullName,
             avatarUrl: req.body.avatarUrl,
             passwordHash: hash,
-            isDeveloper: req.body.isDeveloper,
-            
+            isDeveloper: req.body.Developer,
+            Profile: profileDoc
         });
 
 

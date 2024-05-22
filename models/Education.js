@@ -12,7 +12,7 @@ const EducationSchema = new mongoose.Schema({
         required: true,
     },
     Documents: {
-        type: String,
+        type: mongoose.Types.Array,
         required: true,
         unique: true,
     },

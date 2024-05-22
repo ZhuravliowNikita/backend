@@ -3,19 +3,13 @@ import mongoose from "mongoose";
 
 
 export const ProfileSchema = new mongoose.Schema({
-    FullName:{
-        type: String,
-        required: true,
-    },
     Birthday: {
         type: Date,
         required: true,
-        
     },
     pricePerHour: {
         type: Number,
-        required: true,
-        
+        default: null,
     },
     Speed: {
         type: Number,
