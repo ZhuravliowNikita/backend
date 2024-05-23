@@ -119,3 +119,23 @@ export const getMe = async (req, res) => {
         });
     }
 }
+
+export const getDevelopers = async (req, res) => {
+    try {
+        const page = +(req.params.page);
+        let itemsPerPage = 10*page;
+        let Users = await UserModel.find(
+            {isDeveloper: true}
+        )
+            .limit(itemsPerPage)
+            .populate({path: "Profile", populate: {path: "Skills", populate:"Skill"}});
+
+
+        res.json(Users)
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({
+            message: `Couldn't find tasks`,
+        });
+    }
+}

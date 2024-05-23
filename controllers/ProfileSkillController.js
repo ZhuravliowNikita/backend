@@ -1,6 +1,7 @@
 import { validationResult } from 'express-validator'
 import ProfileSkillModel from '../models/ProfileSkill.js';
-
+import UserModel from '../models/User.js'
+import ProfileModel from "../models/Profile.js"
 
 
 
@@ -11,7 +12,9 @@ export const createProfileSkill = async (req, res) => {
             return res.status(400).json(errors.array());
         }
 
-        const Profile = req.body.Profile;
+        const user = await UserModel.findById(req.userId).populate("Profile");
+
+        const Profile = user.Profile;
         const Skill = req.body.Skill;
         
        

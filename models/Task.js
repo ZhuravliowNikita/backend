@@ -51,9 +51,15 @@ const TaskSchema = new mongoose.Schema({
     },
 },
     {
+        toJSON: { virtuals: true },
         timestamps: true,
     },
 );
 
+TaskSchema.virtual('Skills', {
+    ref: 'TaskSkill',
+    localField: '_id',
+    foreignField: 'Task'
+  });
 
 export default mongoose.model('Task', TaskSchema);

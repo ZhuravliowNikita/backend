@@ -31,9 +31,16 @@ export const ProfileSchema = new mongoose.Schema({
     },
 },
     {
+        toJSON: { virtuals: true },
         timestamps: true,
     },
 );
+
+ProfileSchema.virtual('Skills', {
+    ref: 'ProfileSkill',
+    localField: '_id',
+    foreignField: 'Profile'
+  });
 
 
 export default mongoose.model('Profile', ProfileSchema);

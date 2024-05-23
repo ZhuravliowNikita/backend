@@ -30,6 +30,7 @@ app.use(express.json());
 // User routes
 app.post('/auth/login', UserController.login);
 app.post('/auth/register', registerValidation, UserController.register);
+app.get('/developers/:page', UserController.getDevelopers);
 app.get('/auth/me', checkAuth, UserController.getMe);
 
 // Contact type routes

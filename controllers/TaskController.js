@@ -74,7 +74,7 @@ export const getTasks = async (req, res) => {
             .populate('Customer')
             .populate('Developer')
             .populate('Category')
-            .populate("Task", "-Skill")
+            .populate({path:"Skills", populate: {path: "Skill"}})
             ;
 
 
