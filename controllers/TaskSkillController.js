@@ -12,11 +12,11 @@ export const createTaskSkill = async (req, res) => {
         }
 
         const Skill = req.body.Skill;
-        const Status = req.body.Status;
+        const Task = req.body.Task;
        
         const doc = new taskSkillModel({
             Skill,
-            Status,
+            Task,
         });
 
 
@@ -89,11 +89,11 @@ export const updateTaskSkill = async (req, res) => {
     try {
 
         const Skill = req.body.Skill;
-        const Status = req.body.Status;
+        const Task = req.body.Task;
 
         const TaskSkill = await taskSkillModel.findByIdAndUpdate(req.params.id, {
             Skill,
-            Status,
+            Task,
         })
         res.json(TaskSkill);
     } catch (err) {

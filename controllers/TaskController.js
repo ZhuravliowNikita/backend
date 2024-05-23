@@ -1,6 +1,8 @@
 import { validationResult } from 'express-validator'
 import TaskModel from '../models/Task.js'
-
+import taskStatusModel from '../models/TaskStatus.js';
+import CategoryModel from '../models/Category.js'
+import taskSkillModel from '../models/TaskSkill.js';
 
 export const createTask = async (req, res) => {
     try {
@@ -14,14 +16,18 @@ export const createTask = async (req, res) => {
         const Title = req.body.Title;
         const Description = req.body.Description;
         const PricePerHour = req.body.PricePerHour;
-        const Customer = req.body.Customer;
+        const Customer = req.userId;
+        const Category = await CategoryModel.findById(req.body.Category);
         
+        const openStatus = await taskStatusModel.findById("664f2871a5015f2646c74c1b")
 
         const doc = new TaskModel({
             Title: Title,
             Description: Description,
             pricePerHour: PricePerHour,
             Customer: Customer,
+            Status: openStatus,
+            Category
         });
 
 
@@ -61,10 +67,16 @@ export const getTask = async (req, res) => {
 export const getTasks = async (req, res) => {
     try {
         const page = +(req.params.page);
-        let itemsPerPage = 10;
-        const Tasks = await TaskModel.find()
-            .skip((page - 1) * itemsPerPage)
-            .limit(itemsPerPage);
+        let itemsPerPage = 10*page;
+        let Tasks = await TaskModel.find()
+            .limit(itemsPerPage)
+            .populate('Status')
+            .populate('Customer')
+            .populate('Developer')
+            .populate('Category')
+            .populate("Task", "-Skill")
+            ;
+
 
         res.json(Tasks)
     } catch (err) {

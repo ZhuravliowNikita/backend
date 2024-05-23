@@ -8,7 +8,7 @@ const TaskSkillSchema = new mongoose.Schema({
         required: true,
         unique: true,
     },
-    Status: {
+    Task: {
         type: mongoose.Types.ObjectId,
         ref: "Task",
         required: true,

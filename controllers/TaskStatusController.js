@@ -11,10 +11,10 @@ export const createTaskStatus = async (req, res) => {
             return res.status(400).json(errors.array());
         }
 
-        const StatusName = req.body.StatusName;
+        const statusName = req.body.statusName;
        
         const doc = new taskStatusModel({
-            StatusName,
+            statusName: statusName,
         });
 
 

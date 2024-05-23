@@ -56,9 +56,9 @@ app.patch('/profileSkill/:id', checkAuth, ProfileSkillController.updateProfileSk
 // Skill routes
 app.get('/skill/:id', SkillController.getSkill);
 app.get('/skills/:page', SkillController.getSkills);
-app.post('/skill/', checkAuth, checkAdmin, checkAuth, SkillController.createSkill);
-app.delete('/skill/:id', checkAuth, checkAdmin, checkAuth, SkillController.deleteSkill);
-app.patch('/skill/:id', checkAuth, checkAdmin, checkAuth, SkillController.updateSkill);
+app.post('/skill/', checkAuth, checkAdmin, SkillController.createSkill);
+app.delete('/skill/:id', checkAuth, checkAdmin, SkillController.deleteSkill);
+app.patch('/skill/:id', checkAuth, checkAdmin, SkillController.updateSkill);
 
 // Task routes
 app.get('/task/:id', TaskController.getTask);
@@ -77,9 +77,9 @@ app.patch('/taskskill/:id', checkAuth, TaskSkillController.updateTaskSkill);
 // Task status routes
 app.get('/taskstatus/:id', TaskStatusController.getTaskStatus);
 app.get('/taskstatuses/:page', TaskStatusController.getTaskStatuses);
-app.post('/taskstatus/', checkAuth, TaskStatusController.createTaskStatus);
-app.delete('/taskstatus/:id', checkAuth, TaskStatusController.deleteTaskStatus);
-app.patch('/taskstatus/:id', checkAuth, TaskStatusController.updateTaskStatus);
+app.post('/taskstatus/', checkAuth, checkAdmin, TaskStatusController.createTaskStatus);
+app.delete('/taskstatus/:id', checkAuth, checkAdmin, TaskStatusController.deleteTaskStatus);
+app.patch('/taskstatus/:id', checkAuth, checkAdmin, TaskStatusController.updateTaskStatus);
 
 // Contact routes
 app.get('/contact/:id', ContactController.getContact);

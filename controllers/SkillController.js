@@ -1,6 +1,6 @@
 import { validationResult } from 'express-validator'
 import SkillModel from '../models/Skill.js';
-
+import CategoryModel from '../models/Category.js'
 
 
 
@@ -12,10 +12,11 @@ export const createSkill = async (req, res) => {
         }
 
         const skillName = req.body.skillName;
-        
+        const Category = await CategoryModel.findById(req.body.Category)
        
         const doc = new SkillModel({
             skillName,
+            Category
         });
 
 

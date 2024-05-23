@@ -5,7 +5,7 @@ const SkillSchema = new mongoose.Schema({
     skillName: {
         type: String,
         required: true,
-        unique: true,
+        unique: false,
     },
     Category: {
         type: mongoose.Types.ObjectId,
