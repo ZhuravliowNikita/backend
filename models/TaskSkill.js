@@ -6,13 +6,12 @@ const TaskSkillSchema = new mongoose.Schema({
         type: mongoose.Types.ObjectId,
         ref: "Skill",
         required: true,
-        unique: true,
     },
     Task: {
         type: mongoose.Types.ObjectId,
         ref: "Task",
         required: true,
-        unique: true,
+
     },
 },
     {

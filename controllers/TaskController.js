@@ -11,14 +11,14 @@ export const createTask = async (req, res) => {
             return res.status(400).json(errors.array());
         }
 
-        
-        
+
+
         const Title = req.body.Title;
         const Description = req.body.Description;
         const PricePerHour = req.body.PricePerHour;
         const Customer = req.userId;
         const Category = await CategoryModel.findById(req.body.Category);
-        
+
         const openStatus = await taskStatusModel.findById("664f2871a5015f2646c74c1b")
 
         const doc = new TaskModel({
@@ -30,12 +30,32 @@ export const createTask = async (req, res) => {
             Category
         });
 
+        let Task = await doc.save();
+        if (req.body.Skills) {
+            await taskSkillModel.deleteMany({ Task: Task })
+            req.body.Skills.forEach(async (skill) => {
+                const doc = new taskSkillModel({
+                    Skill: skill,
+                    Task,
+                });
+                await doc.save();
+            })
 
-        const Task = await doc.save();
+        }
+        Task = await TaskModel.findById(Task._id)
+            .populate("Category")
+            .populate("Customer")
+            .populate("Status")
+            .populate({ path: "Skills", populate: { path: "Skill" } })
+            ;
 
-        res.json({
-            Task
-        });
+        if (!Task) {
+            return res.status(404).json({
+                message: `Task not found.`,
+            });
+        }
+
+        return res.json(Task);
     }
     catch (err) {
         console.log(err);
@@ -47,7 +67,12 @@ export const createTask = async (req, res) => {
 
 export const getTask = async (req, res) => {
     try {
-        const Task = await TaskModel.findById(req.params.id);
+        const Task = await TaskModel.findById(req.params.id)
+            .populate("Category")
+            .populate("Customer")
+            .populate("Status")
+            .populate({ path: "Skills", populate: { path: "Skill" } })
+            ;
 
         if (!Task) {
             return res.status(404).json({
@@ -67,15 +92,29 @@ export const getTask = async (req, res) => {
 export const getTasks = async (req, res) => {
     try {
         const page = +(req.params.page);
-        let itemsPerPage = 10*page;
-        let Tasks = await TaskModel.find()
-            .limit(itemsPerPage)
-            .populate('Status')
-            .populate('Customer')
-            .populate('Developer')
-            .populate('Category')
-            .populate({path:"Skills", populate: {path: "Skill"}})
-            ;
+        let itemsPerPage = 10 * page;
+        let Tasks
+        if (req.body.Category) {
+            Tasks = await TaskModel.find({ Category: req.body.Category })
+                .limit(itemsPerPage)
+                .populate('Status')
+                .populate('Customer')
+                .populate('Developer')
+                .populate('Category')
+                .populate({ path: "Skills", populate: { path: "Skill" } })
+                ;
+        }
+        else {
+
+            Tasks = await TaskModel.find()
+                .limit(itemsPerPage)
+                .populate('Status')
+                .populate('Customer')
+                .populate('Developer')
+                .populate('Category')
+                .populate({ path: "Skills", populate: { path: "Skill" } })
+                ;
+        }
 
 
         res.json(Tasks)
@@ -104,30 +143,66 @@ export const deleteTask = async (req, res) => {
 export const updateTask = async (req, res) => {
     try {
 
-        
+        const checkTask = await TaskModel.findById(req.params.id).populate("Customer")
+        if ("" + checkTask.Customer._id !== req.userId) {
+            return res.status(500).json({
+                message: `Access denied.`,
+            });
+        }
+
         const Title = req.body.Title;
         const Description = req.body.Description;
-        const pricePerHour = req.body.pricePerHour;
-        const Customer = req.body.Customer;
+        const pricePerHour = req.body.PricePerHour;
         const Speed = req.body.Speed;
         const Quality = req.body.Quality;
         const Communication = req.body.Communication;
         const Developer = req.body.Developer;
         const Status = req.body.Status;
+        const Category = await CategoryModel.findById(req.body.Category);
 
-        const Task = await TaskModel.findByIdAndUpdate(req.params.id, {
+        if (req.body.Skills) {
+            await taskSkillModel.deleteMany({ Task: req.params.id })
+            
+            req.body.Skills.forEach(async (skill) => {
+                const doc = new taskSkillModel({
+                    Skill: skill,
+                    Task: req.params.id,
+                });
+                await doc.save();
+            })
+
+        }
+
+        let Task = await TaskModel.findByIdAndUpdate(req.params.id, {
             Title,
             Description,
             pricePerHour,
-            Customer,
             Speed,
             Quality,
             Communication,
             Developer,
             Status,
+            Category
+
 
         })
-        res.json(Task);
+
+        
+        Task = await TaskModel.findById(req.params.id)
+            .populate("Category")
+            .populate("Customer")
+            .populate("Status")
+            .populate({ path: "Skills", populate: { path: "Skill" } })
+            ;
+
+        if (!Task) {
+            return res.status(404).json({
+                message: `Task not found.`,
+            });
+        }
+
+        return res.json(Task);
+
     } catch (err) {
         console.log(err);
         res.status(500).json({

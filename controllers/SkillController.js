@@ -71,6 +71,22 @@ export const getSkills = async (req, res) => {
     }
 }
 
+export const getSkillsByCategory = async (req, res) => {
+    try {
+        const Category = (req.params.category);
+        
+        const Skills = await SkillModel.find({Category: Category})
+
+        res.json(Skills)
+    } 
+    catch (err) {
+        console.log(err);
+        res.status(500).json({
+            message: `Couldn't find Skills`,
+        });
+    }
+}
+
 export const deleteSkill = async (req, res) => {
     try {
 

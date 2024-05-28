@@ -57,13 +57,14 @@ app.patch('/profileSkill/:id', checkAuth, ProfileSkillController.updateProfileSk
 // Skill routes
 app.get('/skill/:id', SkillController.getSkill);
 app.get('/skills/:page', SkillController.getSkills);
+app.get('/skillsByCategory/:category', SkillController.getSkillsByCategory);
 app.post('/skill/', checkAuth, checkAdmin, SkillController.createSkill);
 app.delete('/skill/:id', checkAuth, checkAdmin, SkillController.deleteSkill);
 app.patch('/skill/:id', checkAuth, checkAdmin, SkillController.updateSkill);
 
 // Task routes
 app.get('/task/:id', TaskController.getTask);
-app.get('/tasks/:page', TaskController.getTasks);
+app.post('/tasks/:page', TaskController.getTasks);
 app.post('/task/', checkAuth, TaskController.createTask);
 app.delete('/task/:id', checkAuth, TaskController.deleteTask);
 app.patch('/task/:id', checkAuth, TaskController.updateTask);
