@@ -1,6 +1,6 @@
 import { validationResult } from 'express-validator'
 import ContactModel from '../models/Contact.js';
-
+import UserModel from '../models/User.js';
 
 
 
@@ -12,8 +12,8 @@ export const createContact = async (req, res) => {
         }
 
         const Type = req.body.Type;
-        const contactValue = req.body.contactValue;
-        const User = req.body.User;
+        const contactValue = req.body.Value;
+        const User = await UserModel.findById(req.userId);
         
        
         const doc = new ContactModel({
@@ -58,11 +58,8 @@ export const getContact = async (req, res) => {
 
 export const getContacts = async (req, res) => {
     try {
-        const page = +(req.params.page);
-        let itemsPerPage = 10;
-        const Contacts = await ContactModel.find()
-            .skip((page - 1) * itemsPerPage)
-            .limit(itemsPerPage);
+        
+        const Contacts = await ContactModel.find({User: req.body.userId}).populate("Type");
 
         res.json(Contacts)
     } 

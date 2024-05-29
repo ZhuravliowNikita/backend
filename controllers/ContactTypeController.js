@@ -51,11 +51,8 @@ export const getContactType = async (req, res) => {
 
 export const getContactTypes = async (req, res) => {
     try {
-        const page = +(req.params.page);
-        let itemsPerPage = 10;
-        const contactTypes = await contactTypeModel.find()
-            .skip((page - 1) * itemsPerPage)
-            .limit(itemsPerPage);
+
+        const contactTypes = await contactTypeModel.find();
 
 res.json(contactTypes)
     } catch (err) {

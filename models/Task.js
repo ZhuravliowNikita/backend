@@ -14,6 +14,10 @@ const TaskSchema = new mongoose.Schema({
         type: Number,
         required: true,
     },
+    Deadline:{
+        type: Date,
+        required: true
+    },
     Speed: {
         type: Number,
         default: 0,
@@ -58,6 +62,11 @@ const TaskSchema = new mongoose.Schema({
 
 TaskSchema.virtual('Skills', {
     ref: 'TaskSkill',
+    localField: '_id',
+    foreignField: 'Task'
+  });
+TaskSchema.virtual('Devs', {
+    ref: 'TaskDev',
     localField: '_id',
     foreignField: 'Task'
   });

@@ -1,5 +1,4 @@
 import mongoose from "mongoose";
-import User from "./User";
 
 
 const EducationSchema = new mongoose.Schema({
@@ -12,7 +11,7 @@ const EducationSchema = new mongoose.Schema({
         required: true,
     },
     Documents: {
-        type: mongoose.Types.Array,
+        type: [String],
         required: true,
         unique: true,
     },
