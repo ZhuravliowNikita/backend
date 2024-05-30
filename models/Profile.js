@@ -15,7 +15,7 @@ export const ProfileSchema = new mongoose.Schema({
         type: Number,
         default: 0,
         required: true,
-        
+
     },
     Quality: {
         type: Number,

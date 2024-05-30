@@ -70,10 +70,12 @@ app.patch('/skill/:id', checkAuth, checkAdmin, SkillController.updateSkill);
 // Task routes
 app.get('/task/:id', TaskController.getTask);
 app.post('/tasks/:page', TaskController.getTasks);
+app.get('/taskdevrecomendation/:id', TaskController.getRecomendationDevs);
 app.post('/task/', checkAuth, TaskController.createTask);
 app.delete('/task/:id', checkAuth, checkTaskAuthor, TaskController.deleteTask);
 app.patch('/task/:id', checkAuth, checkTaskAuthor, TaskController.updateTask);
 app.patch('/taskassigndev/:id', checkAuth, checkTaskAuthor, TaskController.assignDeveloper);
+app.patch('/taskestimate/:id', checkAuth, checkTaskAuthor, TaskController.estimateDeveloper);
 
 // Task skill routes
 app.get('/taskskill/:id', TaskSkillController.getTaskSkill);
